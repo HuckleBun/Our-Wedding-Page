@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wedding Registry</title>
+    <meta
+      name="description"
+      content="Our wedding registry — browse gifts and mark what you've purchased."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="container header-content">
+        <div class="header-text">
+          <h1 class="brand-title" id="pageTitle">Wedding Registry</h1>
+          <p class="brand-subtitle" id="pageSubtitle" hidden></p>
+        </div>
+        <div class="header-tools">
+          <button type="button" class="btn btn-ghost" id="resetClaims" hidden>
+            Reset purchased marks
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="notice" class="notice" hidden></section>
+
+      <div id="listEmpty" class="empty" hidden>
+        <p>No registry items yet. Add entries to <code>items.json</code>.</p>
+      </div>
+      <ul id="items" class="grid"></ul>
+    </main>
+
+    <template id="itemTemplate">
+      <li class="card">
+        <div class="thumb-wrap">
+          <span class="purchased-badge" hidden>Purchased</span>
+          <img class="thumb" alt="" loading="lazy" />
+        </div>
+        <div class="card-body">
+          <div class="card-title-row">
+            <h3 class="card-title"></h3>
+            <span class="price"></span>
+          </div>
+          <p class="notes"></p>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="claim-btn">Mark as purchased</button>
+        </div>
+      </li>
+    </template>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

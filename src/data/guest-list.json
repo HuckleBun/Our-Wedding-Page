@@ -1,0 +1,10 @@
+{
+  "invitees": [
+    {
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "email": "jane@example.com",
+      "notes": "Example contact — replace with real guests"
+    }
+  ]
+}

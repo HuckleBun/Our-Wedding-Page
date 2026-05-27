@@ -1,0 +1,55 @@
+{
+  "coupleNames": "Micah & Emily",
+  "weddingDate": "2026-09-12",
+  "weddingDateDisplay": "September 12, 2026",
+  "venue": {
+    "name": "Venue Name",
+    "city": "Gardner, KS"
+  },
+  "home": {
+    "headline": "We're getting married!",
+    "heroImage": "",
+    "dateLine1": "TBD",
+    "dateLine2": "",
+    "locationLine1": "TBD",
+    "locationLine2": ""
+  },
+  "about": {
+    "sections": [
+      {
+        "title": "How we met",
+        "body": "Share your story here — how you met, your first date, or what made you say yes."
+      },
+      {
+        "title": "",
+        "body": ""
+      }
+    ]
+  },
+  "weddingParty": [
+    {
+      "name": "Name",
+      "role": "Maid of Honor",
+      "bio": "Short bio for your wedding party member.",
+      "image": "/images/wedding-party/placeholder.jpg"
+    },
+    {
+      "name": "Name",
+      "role": "Best Man",
+      "bio": "Short bio for your wedding party member.",
+      "image": "/images/wedding-party/placeholder.jpg"
+    }
+  ],
+  "photos": [
+    {
+      "src": "/images/photos/engagement-1.jpg",
+      "alt": "Engagement photo",
+      "caption": "Add your favorite photos to public/images/photos/"
+    }
+  ],
+  "registry": {
+    "lead": "Your presence is the greatest gift. If you wish to give something, follow the link below to our wedding registry.",
+    "amazonUrl": "https://www.amazon.com/wedding/guest-view/CR9FBTHZ29JU",
+    "linkLabel": "View our Amazon registry"
+  }
+}

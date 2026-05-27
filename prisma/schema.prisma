@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Rsvp {
+  id                  String   @id @default(cuid())
+  createdAt           DateTime @default(now())
+  firstName           String
+  lastName            String
+  email               String
+  attending           Boolean
+  guestCount          Int      @default(1)
+  additionalGuests    Json?
+  mealPreference      String?
+  dietaryRestrictions String?
+  message             String?
+}
+
+model Invitee {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  firstName String
+  lastName  String
+  email     String   @unique
+  notes     String?
+}
+
+model EmailLog {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  toEmail     String
+  toName      String?
+  subject     String
+  templateKey String
+  status      String
+  error       String?
+  rsvpId      String?
+  inviteeId   String?
+}

@@ -1,0 +1,22 @@
+{
+  "rsvpConfirmation": {
+    "subject": "RSVP received — {{coupleNames}}",
+    "body": "Hi {{firstName}},\n\nThank you for your RSVP! We have received your response and can't wait to celebrate with you.\n\nWedding date: {{weddingDate}}\nLocation: {{venueCity}}\n\nIf you need to update your response, please contact us directly.\n\nWith love,\n{{coupleNames}}\n\nRSVP page: {{rsvpUrl}}"
+  },
+  "rsvpNotification": {
+    "subject": "New RSVP from {{firstName}} {{lastName}}",
+    "body": "A new RSVP was submitted:\n\nName: {{firstName}} {{lastName}}\nEmail: {{guestEmail}}\nGuest count: {{guestCount}}\nMessage: {{guestMessage}}\n\nView all RSVPs: {{adminRsvpUrl}}"
+  },
+  "saveTheDate": {
+    "subject": "Save the Date — {{coupleNames}}",
+    "body": "Hi {{firstName}},\n\nWe're getting married! Please save the date:\n\n{{weddingDate}}\n{{venueCity}}\n\nWe hope you can join us. More details and RSVP coming soon at:\n{{siteUrl}}\n\nWith love,\n{{coupleNames}}"
+  },
+  "invitation": {
+    "subject": "You're invited — {{coupleNames}}",
+    "body": "Hi {{firstName}},\n\nWe would love for you to celebrate our wedding with us!\n\nDate: {{weddingDate}}\nLocation: {{venueCity}}\n\nPlease RSVP at your earliest convenience:\n{{rsvpUrl}}\n\nVisit our wedding site for details:\n{{siteUrl}}\n\nWith love,\n{{coupleNames}}"
+  },
+  "reminder": {
+    "subject": "Reminder: please RSVP — {{coupleNames}}",
+    "body": "Hi {{firstName}},\n\nThis is a friendly reminder to RSVP for our wedding on {{weddingDate}}.\n\nPlease let us know if you can join us:\n{{rsvpUrl}}\n\nThank you!\n{{coupleNames}}"
+  }
+}
