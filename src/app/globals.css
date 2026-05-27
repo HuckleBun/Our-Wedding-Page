@@ -142,6 +142,14 @@ main {
   font-size: 16px;
 }
 
+.coming-soon {
+  text-align: center;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(22px, 3vw, 28px);
+  font-style: italic;
+  color: var(--text);
+}
+
 .panel {
   border: 1px solid var(--border);
   background: var(--surface);

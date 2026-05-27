@@ -13,11 +13,8 @@ model Rsvp {
   firstName           String
   lastName            String
   email               String
-  attending           Boolean
   guestCount          Int      @default(1)
   additionalGuests    Json?
-  mealPreference      String?
-  dietaryRestrictions String?
   message             String?
 }
 
