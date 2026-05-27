@@ -47,12 +47,9 @@ export async function POST(request: Request) {
         firstName,
         lastName,
         email,
-        attending: true,
         guestCount,
         additionalGuests:
           additionalGuests.length > 0 ? additionalGuests : Prisma.JsonNull,
-        mealPreference: null,
-        dietaryRestrictions: null,
         message: String(body.message || "").trim() || null,
       },
     });

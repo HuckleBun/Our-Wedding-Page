@@ -9,11 +9,8 @@ export type RsvpRecord = {
   firstName: string;
   lastName: string;
   email: string;
-  attending: boolean;
   guestCount: number;
   additionalGuests: unknown;
-  mealPreference: string | null;
-  dietaryRestrictions: string | null;
   message: string | null;
 };
 

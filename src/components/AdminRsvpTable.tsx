@@ -10,11 +10,8 @@ type RsvpRow = {
   firstName: string;
   lastName: string;
   email: string;
-  attending: boolean;
   guestCount: number;
   additionalGuests: GuestName[];
-  mealPreference: string | null;
-  dietaryRestrictions: string | null;
   message: string | null;
 };
 
