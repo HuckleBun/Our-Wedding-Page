@@ -2,13 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
+import { AdminTextPanel } from "@/components/AdminTextPanel";
 import type { SerializedHousehold } from "@/lib/households";
+import type { TemplateVars } from "@/lib/template";
 
 type GuestDraft = { key: string; firstName: string; lastName: string };
 
 type FormState = {
   name: string;
   email: string;
+  phone: string;
   plusOnes: number;
   notes: string;
   guests: GuestDraft[];
@@ -24,6 +27,7 @@ function emptyForm(): FormState {
   return {
     name: "",
     email: "",
+    phone: "",
     plusOnes: 0,
     notes: "",
     guests: [{ key: newKey(), firstName: "", lastName: "" }],
@@ -39,9 +43,11 @@ const STATUS_LABEL: Record<SerializedHousehold["status"], string> = {
 export function AdminGuestList({
   households,
   invitePageUrl,
+  textVars,
 }: {
   households: SerializedHousehold[];
   invitePageUrl: string | null;
+  textVars: TemplateVars;
 }) {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -52,26 +58,32 @@ export function AdminGuestList({
   const [busy, setBusy] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
   const [copied, setCopied] = useState(false);
+  const [textQueue, setTextQueue] = useState<SerializedHousehold[] | null>(null);
+  const [textAudience, setTextAudience] = useState<"all" | "awaiting">("all");
 
   const totals = useMemo(() => {
     let guests = 0;
     let plusOnes = 0;
     let noEmail = 0;
+    let withPhone = 0;
     for (const h of households) {
       guests += h.guests.filter((g) => !g.isPlusOne).length;
       plusOnes += h.plusOnes;
       if (!h.email) noEmail += 1;
+      if (h.phone) withPhone += 1;
     }
-    return { guests, plusOnes, noEmail };
+    return { guests, plusOnes, noEmail, withPhone };
   }, [households]);
 
   const visible = useMemo(() => {
     const q = filter.trim().toLowerCase();
+    const digits = q.replace(/\D/g, "");
     if (!q) return households;
     return households.filter(
       (h) =>
         h.name.toLowerCase().includes(q) ||
         (h.email ?? "").includes(q) ||
+        (digits.length >= 3 && (h.phone ?? "").includes(digits)) ||
         h.guests.some((g) => `${g.firstName} ${g.lastName}`.toLowerCase().includes(q))
     );
   }, [households, filter]);
@@ -88,6 +100,7 @@ export function AdminGuestList({
     setForm({
       name: h.name,
       email: h.email ?? "",
+      phone: h.phoneDisplay ?? "",
       plusOnes: h.plusOnes,
       notes: h.notes ?? "",
       guests: h.guests
@@ -128,6 +141,7 @@ export function AdminGuestList({
           body: JSON.stringify({
             name: form.name.trim(),
             email: form.email.trim() || null,
+            phone: form.phone.trim() || null,
             plusOnes: form.plusOnes,
             notes: form.notes.trim() || null,
             guests: form.guests.map((g) => ({
@@ -206,6 +220,16 @@ export function AdminGuestList({
     router.push(`/admin/email?${params.toString()}`);
   }
 
+  function openTextQueue(list: SerializedHousehold[]) {
+    setTextQueue(list);
+    setShowForm(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  const textable = households.filter(
+    (h) => h.phone && (textAudience === "all" || !h.respondedAt)
+  );
+
   async function copyInviteLink() {
     if (!invitePageUrl) return;
     try {
@@ -249,6 +273,8 @@ export function AdminGuestList({
           <strong>{households.length}</strong> households ·{" "}
           <strong>{totals.guests}</strong> invited guests ·{" "}
           <strong>{totals.plusOnes}</strong> plus-ones allowed
+          {" "}
+          · <strong>{totals.withPhone}</strong> with phone
           {totals.noEmail > 0 ? (
             <>
               {" "}
@@ -260,6 +286,24 @@ export function AdminGuestList({
           <button type="button" className="btn btn-primary" onClick={openCreate}>
             Add household
           </button>
+          <span className="admin-text-launch">
+            <select
+              aria-label="Who to text"
+              value={textAudience}
+              onChange={(e) => setTextAudience(e.target.value as "all" | "awaiting")}
+            >
+              <option value="all">Everyone with a phone</option>
+              <option value="awaiting">Not yet responded</option>
+            </select>
+            <button
+              type="button"
+              className="btn"
+              onClick={() => openTextQueue(textable)}
+              disabled={textable.length === 0}
+            >
+              Send texts ({textable.length})
+            </button>
+          </span>
           <button
             type="button"
             className="btn btn-ghost"
@@ -273,6 +317,15 @@ export function AdminGuestList({
 
       {message ? <div className="notice notice-success">{message}</div> : null}
       {error ? <div className="notice notice-error">{error}</div> : null}
+
+      {textQueue && textQueue.length > 0 ? (
+        <AdminTextPanel
+          key={textQueue.map((h) => h.id).join(",")}
+          households={textQueue}
+          baseVars={textVars}
+          onClose={() => setTextQueue(null)}
+        />
+      ) : null}
 
       {showForm ? (
         <form className="form panel admin-household-form" onSubmit={onSubmit}>
@@ -364,6 +417,17 @@ export function AdminGuestList({
           </div>
 
           <div className="field">
+            <label htmlFor="hPhone">Mobile phone (optional, for texting)</label>
+            <input
+              id="hPhone"
+              type="tel"
+              value={form.phone}
+              placeholder="(555) 123-4567"
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
+          </div>
+
+          <div className="field">
             <label htmlFor="hNotes">Notes (optional, only you see these)</label>
             <textarea
               id="hNotes"
@@ -404,6 +468,7 @@ export function AdminGuestList({
                   <th>Guests</th>
                   <th>Plus-ones</th>
                   <th>Email</th>
+                  <th>Phone</th>
                   <th>RSVP</th>
                   <th>Notes</th>
                   <th></th>
@@ -421,6 +486,7 @@ export function AdminGuestList({
                     </td>
                     <td>{h.plusOnes || "—"}</td>
                     <td>{h.email || "—"}</td>
+                    <td className="admin-nowrap">{h.phoneDisplay || "—"}</td>
                     <td>
                       <span className={`status-badge status-${h.status}`}>
                         {STATUS_LABEL[h.status]}
@@ -429,6 +495,15 @@ export function AdminGuestList({
                     <td>{h.notes || "—"}</td>
                     <td>
                       <div className="admin-row-actions">
+                        {h.phone ? (
+                          <button
+                            type="button"
+                            className="btn btn-ghost admin-remove-btn"
+                            onClick={() => openTextQueue([h])}
+                          >
+                            Text
+                          </button>
+                        ) : null}
                         {h.email ? (
                           <button
                             type="button"

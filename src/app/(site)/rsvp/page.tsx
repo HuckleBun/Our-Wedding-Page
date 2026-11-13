@@ -6,7 +6,7 @@ export default function RsvpPage() {
     <div className="container">
       <PageHeader
         title="RSVP"
-        lead="Please respond by the date on your invitation. We can't wait to celebrate with you."
+        lead="We can't wait to celebrate with you. Look up your name below to let us know if you can make it."
       />
       <RsvpForm />
     </div>

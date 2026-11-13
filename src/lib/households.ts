@@ -10,6 +10,7 @@ export type GuestName = {
 export type HouseholdInput = {
   name: string;
   email: string | null;
+  phone: string | null;
   plusOnes: number;
   notes: string | null;
   guests: GuestName[];
@@ -38,6 +39,30 @@ export function normalizeEmail(raw: unknown): string | null {
 
 export function isValidEmail(email: string): boolean {
   return EMAIL_RE.test(email);
+}
+
+/**
+ * Normalizes a phone number to +<digits>. US numbers can be typed any common way
+ * ("(555) 123-4567", "555.123.4567", "1-555-123-4567"); other countries need a
+ * leading +. Returns null for blank input, "invalid" when it can't be a phone number.
+ */
+export function normalizePhone(raw: unknown): string | null | "invalid" {
+  const text = String(raw ?? "").trim();
+  if (!text) return null;
+  if (/[^\d\s()+.\-]/.test(text)) return "invalid";
+  const digits = text.replace(/\D/g, "");
+  if (text.startsWith("+")) {
+    return digits.length >= 8 && digits.length <= 15 ? `+${digits}` : "invalid";
+  }
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return "invalid";
+}
+
+/** "+15551234567" -> "(555) 123-4567"; other countries are shown as stored. */
+export function formatPhone(phone: string): string {
+  const m = phone.match(/^\+1(\d{3})(\d{3})(\d{4})$/);
+  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : phone;
 }
 
 export function formatGuestName(guest: GuestName): string {
@@ -103,6 +128,14 @@ export function parseHouseholdInput(
     return { ok: false, error: "That email address doesn't look right." };
   }
 
+  const phone = normalizePhone(entry.phone);
+  if (phone === "invalid") {
+    return {
+      ok: false,
+      error: "That phone number doesn't look right. Use a 10-digit US number, or start with + for other countries.",
+    };
+  }
+
   const plusOnes = Number(entry.plusOnes ?? 0);
   if (!Number.isInteger(plusOnes) || plusOnes < 0 || plusOnes > MAX_PLUS_ONES) {
     return { ok: false, error: `Plus-ones must be a whole number from 0 to ${MAX_PLUS_ONES}.` };
@@ -111,7 +144,7 @@ export function parseHouseholdInput(
   const name = String(entry.name ?? "").trim() || defaultHouseholdName(guests);
   const notes = String(entry.notes ?? "").trim() || null;
 
-  return { ok: true, value: { name, email, plusOnes, notes, guests } };
+  return { ok: true, value: { name, email, phone, plusOnes, notes, guests } };
 }
 
 export type HouseholdWithGuests = Household & { guests: Guest[] };
@@ -167,6 +200,7 @@ export async function createHousehold(input: HouseholdInput) {
     data: {
       name: input.name,
       email: input.email,
+      phone: input.phone,
       plusOnes: input.plusOnes,
       notes: input.notes,
       guests: {
@@ -220,6 +254,7 @@ export async function updateHousehold(id: string, input: HouseholdInput) {
       data: {
         name: input.name,
         email: input.email,
+        phone: input.phone,
         plusOnes: input.plusOnes,
         notes: input.notes,
       },
@@ -283,6 +318,7 @@ export async function importGuestListFromJson(): Promise<{
     await updateHousehold(existing.id, {
       ...input,
       email: input.email ?? existing.email,
+      phone: input.phone ?? existing.phone,
       guests: mergedGuests,
     });
     updated += 1;
@@ -327,6 +363,9 @@ export function serializeHousehold(household: HouseholdWithGuests) {
     id: household.id,
     name: household.name,
     email: household.email,
+    phone: household.phone,
+    phoneDisplay: household.phone ? formatPhone(household.phone) : null,
+    greeting: householdGreeting(invitedGuests(household)),
     plusOnes: household.plusOnes,
     notes: household.notes,
     message: household.message,

@@ -19,6 +19,8 @@ model Household {
   name        String
   /// Optional — many guests won't have one on file. Guests can add it when they RSVP.
   email       String?
+  /// Optional mobile number, stored as +15551234567, for texting from the admin Guest list.
+  phone       String?
   /// How many extra, unnamed guests this household may bring.
   plusOnes    Int       @default(0)
   notes       String?

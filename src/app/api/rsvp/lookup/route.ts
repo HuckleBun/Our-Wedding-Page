@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "We couldn't find that name on our guest list. Try the name as it appears on your invitation, or reach out to us.",
+            "We couldn't find that name on our guest list. Try your full first name instead of a nickname (for example, Robert instead of Bob), or reach out to us if you think something's wrong.",
         },
         { status: 404 }
       );

@@ -1023,3 +1023,77 @@ main {
   font-size: 14px;
   color: var(--muted);
 }
+
+/* ---- Admin: texting ---- */
+
+.admin-nowrap {
+  white-space: nowrap;
+}
+
+.admin-text-launch {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.admin-text-launch select {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.admin-text-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 640px;
+  margin: 0 auto 16px;
+  border-color: var(--accent);
+}
+
+.admin-text-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-text-head h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.admin-text-count {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.admin-text-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .admin-text-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-text-phone {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 15px;
+}
+
+.admin-text-panel a.btn {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.admin-text-nav {
+  align-items: center;
+}

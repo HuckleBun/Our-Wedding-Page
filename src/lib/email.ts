@@ -3,10 +3,11 @@ import { getSite } from "@/lib/site";
 import { prisma } from "@/lib/db";
 import { Resend } from "resend";
 import { getInvitePageUrl } from "@/lib/invite-page";
+import { renderTemplate, type TemplateVars } from "@/lib/template";
 
 export type EmailTemplateKey = keyof typeof emailTemplates;
 
-export type TemplateVars = Record<string, string>;
+export type { TemplateVars };
 
 export type SendEmailOptions = {
   toEmail: string;
@@ -74,10 +75,6 @@ export function listTemplateKeys(): EmailTemplateKey[] {
 
 export function listBulkTemplateKeys(): EmailTemplateKey[] {
   return ["saveTheDate", "invitation", "reminder"];
-}
-
-export function renderTemplate(text: string, vars: TemplateVars): string {
-  return text.replace(/\{\{(\w+)\}\}/g, (_, key: string) => vars[key] ?? "");
 }
 
 export function renderEmailTemplate(

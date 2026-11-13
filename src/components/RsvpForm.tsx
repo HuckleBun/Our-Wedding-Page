@@ -124,8 +124,8 @@ export function RsvpForm() {
     return (
       <form className="form panel" onSubmit={onLookup}>
         <p className="rsvp-intro">
-          Enter the first and last name of anyone in your party, as it appears on your
-          invitation.
+          Enter your first and last name. If you&apos;re responding for your household,
+          anyone&apos;s name will bring up your whole party.
         </p>
         {errorNotice}
         <div className="field">

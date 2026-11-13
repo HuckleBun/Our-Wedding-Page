@@ -3,18 +3,31 @@
     {
       "name": "Micah Duehring",
       "email": "micah@theduehrings.com",
+      "phone": "",
       "plusOnes": 0,
       "notes": "Example household — replace with real guests",
-      "guests": [{ "firstName": "Micah", "lastName": "Duehring" }]
+      "guests": [
+        {
+          "firstName": "Micah",
+          "lastName": "Duehring"
+        }
+      ]
     },
     {
       "name": "",
       "email": "",
+      "phone": "(555) 555-0123",
       "plusOnes": 1,
       "notes": "Example: a couple with one plus-one and no email on file",
       "guests": [
-        { "firstName": "Jane", "lastName": "Example" },
-        { "firstName": "John", "lastName": "Example" }
+        {
+          "firstName": "Jane",
+          "lastName": "Example"
+        },
+        {
+          "firstName": "John",
+          "lastName": "Example"
+        }
       ]
     }
   ]

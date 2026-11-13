@@ -1,0 +1,14 @@
+{
+  "saveTheDate": {
+    "label": "Save the date",
+    "body": "Hi {{greeting}}! We're getting married on {{weddingDate}} in {{venueCity}}, and we'd love for you to save the date: {{inviteUrl}}"
+  },
+  "invitation": {
+    "label": "Invitation",
+    "body": "Hi {{greeting}}! You're invited to our wedding on {{weddingDate}}. Here's your invitation: {{inviteUrl}}\n\nPlease RSVP by looking up your name at {{rsvpUrl}}"
+  },
+  "reminder": {
+    "label": "RSVP reminder",
+    "body": "Hi {{greeting}}! Just a friendly reminder to RSVP for our wedding on {{weddingDate}}. Look up your name here: {{rsvpUrl}}"
+  }
+}

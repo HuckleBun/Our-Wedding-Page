@@ -2,7 +2,7 @@ import { AdminGuestList } from "@/components/AdminGuestList";
 import { AdminLoginForm } from "@/components/AdminLoginForm";
 import { AdminShell } from "@/components/AdminShell";
 import { isAdminSession } from "@/lib/auth";
-import { getSiteUrl } from "@/lib/email";
+import { getBaseTemplateVars, getSiteUrl } from "@/lib/email";
 import { listHouseholds, serializeHousehold } from "@/lib/households";
 import { getInvitePageUrl } from "@/lib/invite-page";
 
@@ -27,6 +27,7 @@ export default async function AdminGuestsPage() {
       <AdminGuestList
         households={households.map(serializeHousehold)}
         invitePageUrl={getInvitePageUrl(getSiteUrl())}
+        textVars={getBaseTemplateVars()}
       />
     </AdminShell>
   );
