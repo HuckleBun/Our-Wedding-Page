@@ -2,9 +2,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Hosted Postgres (Neon via Vercel Storage). DATABASE_URL is the pooled connection the
+// site uses; DATABASE_URL_UNPOOLED is the direct one Prisma needs for schema changes.
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 /// One invitation: everyone who RSVPs together (a couple, a family, a single guest).

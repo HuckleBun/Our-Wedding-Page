@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node ./scripts/dev.mjs",
     "clean": "node ./scripts/clean.mjs",
-    "build": "node ./node_modules/prisma/build/index.js generate && node ./node_modules/next/dist/bin/next build",
+    "build": "node ./node_modules/prisma/build/index.js generate && node ./node_modules/prisma/build/index.js db push --skip-generate && node ./node_modules/next/dist/bin/next build",
     "start": "node ./node_modules/next/dist/bin/next start",
     "db:generate": "node ./node_modules/prisma/build/index.js generate",
     "db:push": "node ./node_modules/prisma/build/index.js db push",
