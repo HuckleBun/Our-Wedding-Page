@@ -14,38 +14,45 @@
     "locationLine1": "TBD",
     "locationLine2": ""
   },
-  "about": {
+  "details": {
+    "lead": "Everything you need to know for the big day.",
     "sections": [
       {
-        "title": "How we met",
-        "body": "Share our story here — how we met, our first date, or what made you say yes."
+        "title": "Ceremony",
+        "body": "Time and location to be announced."
+      },
+      {
+        "title": "Reception",
+        "body": "Dinner, drinks, and dancing to follow the ceremony. Details to come."
+      },
+      {
+        "title": "Attire",
+        "body": "Dress code to be announced."
+      },
+      {
+        "title": "Travel & Accommodations",
+        "body": "Hotel and travel recommendations coming soon."
       }
     ]
   },
-  "weddingParty": [
-    {
-      "name": "Name",
-      "role": "Maid of Honor",
-      "bio": "Short bio for your wedding party member.",
-      "image": "/images/wedding-party/placeholder.jpg"
-    },
-    {
-      "name": "Name",
-      "role": "Best Man",
-      "bio": "Short bio for your wedding party member.",
-      "image": "/images/wedding-party/placeholder.jpg"
-    }
-  ],
-  "photos": [
-    {
-      "src": "/images/photos/engagement-1.jpg",
-      "alt": "Engagement photo",
-      "caption": "Add your favorite photos to public/images/photos/"
-    }
-  ],
   "registry": {
     "lead": "Your presence is the greatest gift. If you wish to give something, follow the link below to our wedding registry.",
     "amazonUrl": "https://www.amazon.com/wedding/guest-view/CR9FBTHZ29JU",
     "linkLabel": "View our Amazon registry"
+  },
+  "invitePage": {
+    "_comment": "Private page at /invite/<INVITE_PAGE_TOKEN>. Set mode to \"saveTheDate\" now and switch to \"invitation\" when invitations go out.",
+    "mode": "saveTheDate",
+    "photo": "",
+    "saveTheDate": {
+      "eyebrow": "Save the Date",
+      "message": "We're getting married! We hope you'll celebrate with us.",
+      "footnote": "Formal invitation to follow"
+    },
+    "invitation": {
+      "eyebrow": "Together with their families",
+      "message": "request the pleasure of your company at their wedding celebration",
+      "footnote": "Kindly respond by the date on your invitation"
+    }
   }
 }

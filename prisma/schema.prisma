@@ -7,25 +7,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Rsvp {
-  id                  String   @id @default(cuid())
-  createdAt           DateTime @default(now())
-  firstName           String
-  lastName            String
-  email               String
-  guestCount          Int      @default(1)
-  additionalGuests    Json?
-  message             String?
+/// One invitation: everyone who RSVPs together (a couple, a family, a single guest).
+model Household {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  /// Label shown in admin and to the guest, e.g. "John & Jane Smith".
+  name        String
+  /// Optional — many guests won't have one on file. Guests can add it when they RSVP.
+  email       String?
+  /// How many extra, unnamed guests this household may bring.
+  plusOnes    Int       @default(0)
+  notes       String?
+  /// Message left with the RSVP.
+  message     String?
+  /// Set when the household submits (or updates) their RSVP.
+  respondedAt DateTime?
+  guests      Guest[]
 }
 
-model Invitee {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  firstName String
-  lastName  String
-  email     String   @unique
-  notes     String?
+model Guest {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  householdId String
+  household   Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  firstName   String
+  lastName    String
+  /// Lowercased "first last" used for the RSVP name lookup.
+  nameKey     String
+  /// True for a plus-one the household named when RSVPing.
+  isPlusOne   Boolean   @default(false)
+  /// null = no response yet.
+  attending   Boolean?
+
+  @@index([nameKey])
+  @@index([householdId])
 }
 
 model EmailLog {
@@ -37,6 +53,5 @@ model EmailLog {
   templateKey String
   status      String
   error       String?
-  rsvpId      String?
-  inviteeId   String?
+  householdId String?
 }

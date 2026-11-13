@@ -6,9 +6,7 @@ import { FloralDivider } from "@/components/FloralDivider";
 
 const NAV = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/photos", label: "Photos" },
-  { href: "/wedding-party", label: "Wedding Party" },
+  { href: "/details", label: "Details" },
   { href: "/registry", label: "Registry" },
   { href: "/rsvp", label: "RSVP" },
 ];

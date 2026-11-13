@@ -1,10 +1,21 @@
 {
-  "invitees": [
+  "households": [
     {
-      "firstName": "Micah",
-      "lastName": "Duehring",
+      "name": "Micah Duehring",
       "email": "micah@theduehrings.com",
-      "notes": "Example contact — replace with real guests"
+      "plusOnes": 0,
+      "notes": "Example household — replace with real guests",
+      "guests": [{ "firstName": "Micah", "lastName": "Duehring" }]
+    },
+    {
+      "name": "",
+      "email": "",
+      "plusOnes": 1,
+      "notes": "Example: a couple with one plus-one and no email on file",
+      "guests": [
+        { "firstName": "Jane", "lastName": "Example" },
+        { "firstName": "John", "lastName": "Example" }
+      ]
     }
   ]
 }

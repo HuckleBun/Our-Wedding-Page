@@ -2,6 +2,7 @@ import emailTemplates from "@/data/email-templates.json";
 import { getSite } from "@/lib/site";
 import { prisma } from "@/lib/db";
 import { Resend } from "resend";
+import { getInvitePageUrl } from "@/lib/invite-page";
 
 export type EmailTemplateKey = keyof typeof emailTemplates;
 
@@ -13,16 +14,14 @@ export type SendEmailOptions = {
   subject: string;
   body: string;
   templateKey: string;
-  rsvpId?: string;
-  inviteeId?: string;
+  householdId?: string;
 };
 
 export type BatchSendRecipient = {
   toEmail: string;
   toName?: string;
   vars: TemplateVars;
-  inviteeId?: string;
-  rsvpId?: string;
+  householdId?: string;
 };
 
 const MAX_BATCH_SIZE = 50;
@@ -59,6 +58,8 @@ export function getBaseTemplateVars(): TemplateVars {
     venueCity: site.venue.city,
     siteUrl,
     rsvpUrl: `${siteUrl}/rsvp`,
+    detailsUrl: `${siteUrl}/details`,
+    inviteUrl: getInvitePageUrl(siteUrl) ?? siteUrl,
     adminRsvpUrl: `${siteUrl}/admin/rsvps`,
   };
 }
@@ -113,8 +114,7 @@ export async function logEmail(
       templateKey: entry.templateKey,
       status: entry.status,
       error: entry.error ?? null,
-      rsvpId: entry.rsvpId ?? null,
-      inviteeId: entry.inviteeId ?? null,
+      householdId: entry.householdId ?? null,
     },
   });
 }
@@ -172,7 +172,7 @@ export async function sendTemplatedEmail(
   templateKey: EmailTemplateKey,
   toEmail: string,
   vars: TemplateVars,
-  options?: { toName?: string; rsvpId?: string; inviteeId?: string }
+  options?: { toName?: string; householdId?: string }
 ): Promise<{ ok: boolean; error?: string }> {
   const { subject, body } = renderEmailTemplate(templateKey, vars);
   return sendEmail({
@@ -181,38 +181,44 @@ export async function sendTemplatedEmail(
     subject,
     body,
     templateKey,
-    rsvpId: options?.rsvpId,
-    inviteeId: options?.inviteeId,
+    householdId: options?.householdId,
   });
 }
 
 export async function sendRsvpEmails(rsvp: {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  guestCount: number;
+  householdId: string;
+  householdName: string;
+  responderFirstName: string;
+  responderLastName: string;
+  email: string | null;
+  attendingNames: string[];
+  declinedNames: string[];
   message: string | null;
 }) {
   const base = getBaseTemplateVars();
-  const guestVars: TemplateVars = {
+  const vars: TemplateVars = {
     ...base,
-    firstName: rsvp.firstName,
-    lastName: rsvp.lastName,
-    guestEmail: rsvp.email,
-    guestCount: String(rsvp.guestCount),
+    firstName: rsvp.responderFirstName,
+    lastName: rsvp.responderLastName,
+    greeting: rsvp.responderFirstName,
+    householdName: rsvp.householdName,
+    guestEmail: rsvp.email || "(none)",
+    guestCount: String(rsvp.attendingNames.length),
+    attendingNames: rsvp.attendingNames.join(", ") || "(none)",
+    declinedNames: rsvp.declinedNames.join(", ") || "(none)",
     guestMessage: rsvp.message || "(none)",
   };
 
-  await sendTemplatedEmail("rsvpConfirmation", rsvp.email, guestVars, {
-    toName: `${rsvp.firstName} ${rsvp.lastName}`,
-    rsvpId: rsvp.id,
-  });
+  if (rsvp.email) {
+    await sendTemplatedEmail("rsvpConfirmation", rsvp.email, vars, {
+      toName: `${rsvp.responderFirstName} ${rsvp.responderLastName}`,
+      householdId: rsvp.householdId,
+    });
+  }
 
-  const coupleEmails = getCoupleNotificationEmails();
-  for (const coupleEmail of coupleEmails) {
-    await sendTemplatedEmail("rsvpNotification", coupleEmail, guestVars, {
-      rsvpId: rsvp.id,
+  for (const coupleEmail of getCoupleNotificationEmails()) {
+    await sendTemplatedEmail("rsvpNotification", coupleEmail, vars, {
+      householdId: rsvp.householdId,
     });
   }
 }
@@ -238,8 +244,7 @@ export async function sendBatchTemplatedEmails(
       vars,
       {
         toName: recipient.toName,
-        inviteeId: recipient.inviteeId,
-        rsvpId: recipient.rsvpId,
+        householdId: recipient.householdId,
       }
     );
 

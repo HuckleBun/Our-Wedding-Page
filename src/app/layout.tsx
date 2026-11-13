@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
-import { SiteHeader } from "@/components/SiteHeader";
-import { getSite } from "@/lib/site";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -12,6 +10,7 @@ const sourceSans = Source_Sans_3({
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-cormorant",
 });
 
@@ -25,14 +24,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const site = getSite();
-
   return (
     <html lang="en">
-      <body className={`${sourceSans.variable} ${cormorant.variable}`}>
-        <SiteHeader coupleNames={site.coupleNames} />
-        <main>{children}</main>
-      </body>
+      <body className={`${sourceSans.variable} ${cormorant.variable}`}>{children}</body>
     </html>
   );
 }

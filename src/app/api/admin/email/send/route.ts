@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { isAdminSession } from "@/lib/auth";
-import { prisma } from "@/lib/db";
 import {
   getBaseTemplateVars,
   isEmailConfigured,
@@ -12,7 +11,18 @@ import {
   sendTemplatedEmail,
   type EmailTemplateKey,
 } from "@/lib/email";
-import { getRsvpEmailSet } from "@/lib/invitee";
+import {
+  householdGreeting,
+  invitedGuests,
+  listHouseholds,
+  type HouseholdWithGuests,
+} from "@/lib/households";
+
+function emailable(households: HouseholdWithGuests[]) {
+  return households.filter((h): h is HouseholdWithGuests & { email: string } =>
+    Boolean(h.email)
+  );
+}
 
 type RecipientMode = "all" | "selected" | "nonRsvp" | "single";
 
@@ -21,23 +31,19 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [invitees, rsvpEmails] = await Promise.all([
-    prisma.invitee.findMany({ orderBy: { lastName: "asc" } }),
-    getRsvpEmailSet(),
-  ]);
-
-  const nonRsvpCount = invitees.filter(
-    (i) => !rsvpEmails.has(i.email.trim().toLowerCase())
-  ).length;
+  const households = await listHouseholds();
+  const withEmail = emailable(households);
 
   return NextResponse.json({
     configured: isEmailConfigured(),
     templates: listTemplateKeys(),
     bulkTemplates: listBulkTemplateKeys(),
-    inviteeCount: invitees.length,
-    nonRsvpCount,
+    emailableCount: withEmail.length,
+    noEmailCount: households.length - withEmail.length,
+    nonRsvpCount: withEmail.filter((h) => !h.respondedAt).length,
     previewVars: {
       ...getBaseTemplateVars(),
+      greeting: "Jane & John",
       firstName: "Jane",
       lastName: "Doe",
       guestEmail: "jane@example.com",
@@ -55,8 +61,8 @@ export async function POST(request: Request) {
   const body = await request.json();
   const templateKey = String(body.templateKey || "") as EmailTemplateKey;
   const recipientMode = String(body.recipientMode || "") as RecipientMode;
-  const inviteeIds = Array.isArray(body.inviteeIds)
-    ? body.inviteeIds.map(String)
+  const householdIds = Array.isArray(body.householdIds)
+    ? body.householdIds.map(String)
     : [];
 
   if (!listTemplateKeys().includes(templateKey)) {
@@ -67,8 +73,7 @@ export async function POST(request: Request) {
     const email = String(body.email || "").trim().toLowerCase();
     const firstName = String(body.firstName || "").trim();
     const lastName = String(body.lastName || "").trim();
-    const inviteeId = body.inviteeId ? String(body.inviteeId) : undefined;
-    const rsvpId = body.rsvpId ? String(body.rsvpId) : undefined;
+    const householdId = body.householdId ? String(body.householdId) : undefined;
 
     if (!email || !firstName) {
       return NextResponse.json(
@@ -79,14 +84,14 @@ export async function POST(request: Request) {
 
     const vars = {
       ...getBaseTemplateVars(),
+      greeting: firstName,
       firstName,
       lastName,
     };
 
     const result = await sendTemplatedEmail(templateKey, email, vars, {
       toName: `${firstName} ${lastName}`.trim(),
-      inviteeId,
-      rsvpId,
+      householdId,
     });
 
     if (!result.ok) {
@@ -99,20 +104,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, sent: 1, failed: 0 });
   }
 
-  const [invitees, rsvpEmails] = await Promise.all([
-    prisma.invitee.findMany({ orderBy: { lastName: "asc" } }),
-    getRsvpEmailSet(),
-  ]);
+  const households = emailable(await listHouseholds());
 
-  let targets = invitees;
+  let targets = households;
 
   if (recipientMode === "selected") {
-    const idSet = new Set(inviteeIds);
-    targets = invitees.filter((i) => idSet.has(i.id));
+    const idSet = new Set(householdIds);
+    targets = households.filter((h) => idSet.has(h.id));
   } else if (recipientMode === "nonRsvp") {
-    targets = invitees.filter(
-      (i) => !rsvpEmails.has(i.email.trim().toLowerCase())
-    );
+    targets = households.filter((h) => !h.respondedAt);
   } else if (recipientMode !== "all") {
     return NextResponse.json({ error: "Invalid recipient mode." }, { status: 400 });
   }
@@ -130,15 +130,20 @@ export async function POST(request: Request) {
     );
   }
 
-  const recipients = targets.map((invitee) => ({
-    toEmail: invitee.email,
-    toName: `${invitee.firstName} ${invitee.lastName}`,
-    inviteeId: invitee.id,
-    vars: {
-      firstName: invitee.firstName,
-      lastName: invitee.lastName,
-    },
-  }));
+  const recipients = targets.map((household) => {
+    const guests = invitedGuests(household);
+    return {
+      toEmail: household.email,
+      toName: household.name,
+      householdId: household.id,
+      vars: {
+        greeting: householdGreeting(guests),
+        firstName: guests[0]?.firstName ?? "",
+        lastName: guests[0]?.lastName ?? "",
+        householdName: household.name,
+      },
+    };
+  });
 
   const result = await sendBatchTemplatedEmails(templateKey, recipients);
   return NextResponse.json({ ok: true, ...result });
@@ -158,6 +163,10 @@ export async function PUT(request: Request) {
 
   const vars = {
     ...getBaseTemplateVars(),
+    greeting: String(body.greeting || body.firstName || "Jane & John"),
+    householdName: "Jane & John Doe",
+    attendingNames: "Jane Doe, John Doe",
+    declinedNames: "(none)",
     firstName: String(body.firstName || "Jane"),
     lastName: String(body.lastName || "Doe"),
     guestEmail: String(body.guestEmail || "jane@example.com"),

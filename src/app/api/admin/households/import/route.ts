@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
 import { isAdminSession } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { importGuestListFromJson } from "@/lib/households";
 
-export async function GET() {
+export async function POST() {
   if (!(await isAdminSession())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const rsvps = await prisma.rsvp.findMany({
-    orderBy: { createdAt: "desc" },
-  });
-
-  return NextResponse.json({ rsvps });
+  const result = await importGuestListFromJson();
+  return NextResponse.json({ ok: true, ...result });
 }
