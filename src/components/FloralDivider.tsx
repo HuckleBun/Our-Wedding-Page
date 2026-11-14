@@ -7,7 +7,7 @@ type FloralDividerProps = {
 export function FloralDivider({ className }: FloralDividerProps) {
   return (
     <Image
-      src="/images/floral-divider.png"
+      src="/images/floral-divider-color.png"
       alt=""
       width={553}
       height={115}

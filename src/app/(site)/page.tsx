@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { VineFrame } from "@/components/VineFrame";
 import { getSite } from "@/lib/site";
 
 export default function HomePage() {
@@ -13,21 +14,26 @@ export default function HomePage() {
         <h2 className="home-headline">{home.headline}</h2>
       ) : null}
       <div className="home-hero-image-wrap">
-        {heroImage ? (
-          <Image
-            src={heroImage}
-            alt="Micah and Emily"
-            width={1200}
-            height={750}
-            className="home-hero-image"
-            priority
-            unoptimized
-          />
-        ) : (
-          <div className="home-hero-placeholder" aria-label="Photo placeholder">
-            <span>Your photo here</span>
-          </div>
-        )}
+        <VineFrame>
+          {heroImage ? (
+            <Image
+              src={heroImage}
+              alt="Micah and Emily"
+              width={1200}
+              height={750}
+              className="home-hero-image"
+              priority
+              unoptimized
+            />
+          ) : (
+            <div
+              className="home-hero-placeholder"
+              aria-label="Photo placeholder"
+            >
+              <span>Your photo here</span>
+            </div>
+          )}
+        </VineFrame>
       </div>
 
       <div className="home-info">

@@ -1097,3 +1097,54 @@ main {
 .admin-text-nav {
   align-items: center;
 }
+
+.admin-cell-empty {
+  color: var(--muted);
+}
+
+/* ---- Vines around the home photo ---- */
+
+.vine-frame {
+  position: relative;
+}
+
+.vine-frame > .home-hero-image,
+.vine-frame > .home-hero-placeholder {
+  position: relative;
+  z-index: 0;
+}
+
+/* The vine SVG's photo corner sits at 40/300 of its box, so shift each corner by that. */
+.vine-corner {
+  position: absolute;
+  z-index: 1;
+  width: clamp(110px, 30%, 280px);
+  height: auto;
+  aspect-ratio: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 1px rgba(31, 27, 22, 0.18));
+}
+
+.vine-tl {
+  top: 0;
+  left: 0;
+  transform: translate(-13.3%, -13.3%);
+}
+
+.vine-tr {
+  top: 0;
+  right: 0;
+  transform: translate(13.3%, -13.3%) scaleX(-1);
+}
+
+.vine-bl {
+  bottom: 0;
+  left: 0;
+  transform: translate(-13.3%, 13.3%) scaleY(-1);
+}
+
+.vine-br {
+  bottom: 0;
+  right: 0;
+  transform: translate(13.3%, 13.3%) scale(-1, -1);
+}

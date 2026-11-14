@@ -160,10 +160,17 @@ export function AdminRsvpTable({
                         <td>{new Date(h.respondedAt).toLocaleString()}</td>
                       </>
                     ) : (
-                      <td colSpan={5}>
-                        <span className="status-badge status-awaiting">Awaiting</span>{" "}
-                        {names(invited)}
-                      </td>
+                      <>
+                        <td className="admin-cell-empty">—</td>
+                        <td className="admin-cell-empty">—</td>
+                        <td className="admin-cell-empty">
+                          {h.plusOnes > 0 ? `${h.plusOnes} allowed` : "—"}
+                        </td>
+                        <td className="admin-cell-empty">—</td>
+                        <td>
+                          <span className="status-badge status-awaiting">Awaiting</span>
+                        </td>
+                      </>
                     )}
                     <td>
                       {h.respondedAt ? (
