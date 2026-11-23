@@ -1,18 +1,18 @@
 {
   "coupleNames": "Micah & Emily",
-  "weddingDate": "2026-09-12",
-  "weddingDateDisplay": "September 12, 2026",
+  "weddingDate": "2027-05-15",
+  "weddingDateDisplay": "May 15, 2027",
   "venue": {
-    "name": "Venue Name",
+    "name": "",
     "city": "Gardner, KS"
   },
   "home": {
     "headline": "We're getting married!",
-    "heroImage": "",
-    "dateLine1": "TBD",
-    "dateLine2": "",
-    "locationLine1": "TBD",
-    "locationLine2": ""
+    "heroImage": "/images/home-hero.jpg",
+    "dateLine1": "May 15",
+    "dateLine2": "2027",
+    "locationLine1": "Gardner",
+    "locationLine2": "Kansas"
   },
   "details": {
     "lead": "Everything you need to know for the big day.",
@@ -43,15 +43,17 @@
   "invitePage": {
     "_comment": "Private page at /invite/<INVITE_PAGE_TOKEN>. Set mode to \"saveTheDate\" now and switch to \"invitation\" when invitations go out.",
     "mode": "saveTheDate",
-    "photo": "",
+    "photo": "/images/save-the-date.jpg",
     "saveTheDate": {
       "eyebrow": "Save the Date",
       "message": "We're getting married! We hope you'll celebrate with us.",
+      "rsvpNote": "Just look up your name and let us know who's coming. You can respond for your whole household.",
       "footnote": "Formal invitation to follow"
     },
     "invitation": {
       "eyebrow": "Together with their families",
       "message": "request the pleasure of your company at their wedding celebration",
+      "rsvpNote": "Just look up your name and let us know who's coming. You can respond for your whole household.",
       "footnote": "Kindly RSVP on our wedding website"
     }
   }

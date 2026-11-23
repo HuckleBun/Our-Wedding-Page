@@ -1148,3 +1148,173 @@ main {
   right: 0;
   transform: translate(13.3%, 13.3%) scale(-1, -1);
 }
+
+/* ---- Save-the-date with photo ---- */
+
+.invite-card--photo {
+  max-width: 600px;
+  padding: 0;
+  overflow: hidden;
+  outline: none;
+}
+
+/* The photo; the open sky at the top holds the title. Sizes use cqw so the
+   layout scales with the card like a printed card. */
+.invite-photo-hero {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 3 / 4;
+  background-color: #e6e6e6;
+  background-size: cover;
+  background-position: center top;
+}
+
+.invite-photo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4cqw 6cqw 0;
+  color: #1f1f1f;
+  text-align: center;
+}
+
+.invite-photo-floral {
+  display: block;
+  width: 30cqw;
+  height: auto;
+  margin: 0 auto 2.2cqw;
+}
+
+.invite-photo-names {
+  margin: 0;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 5.6cqw;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  /* Trailing letter-spacing would push the line off-center. */
+  margin-right: -0.2em;
+}
+
+.invite-photo-amp {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.15em;
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.invite-photo-script {
+  margin: 0.5cqw 0 0;
+  font-size: 15cqw;
+  font-weight: 400;
+  line-height: 1.05;
+  color: #1f1f1f;
+}
+
+.invite-photo-script--long {
+  font-size: 9cqw;
+}
+
+.invite-photo-rule {
+  width: 9cqw;
+  height: 1px;
+  margin: 2.2cqw auto;
+  background: #3a3a3a;
+}
+
+.invite-photo-when {
+  display: flex;
+  gap: 2.4cqw;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 3.3cqw;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-variant-numeric: lining-nums;
+  color: #2a2a2a;
+}
+
+.invite-photo-when > span:last-child {
+  margin-right: -0.24em;
+}
+
+.invite-photo-sep {
+  letter-spacing: 0;
+}
+
+.invite-photo-body {
+  padding: clamp(24px, 6vw, 40px) clamp(20px, 6vw, 48px) clamp(28px, 6vw, 44px);
+}
+
+.invite-photo-body .invite-message {
+  margin-top: 0;
+}
+
+.invite-photo-body .invite-footnote {
+  margin-top: 16px;
+}
+
+/* ---- Save-the-date: compact bottom with RSVP prompt ---- */
+
+.invite-photo-body {
+  padding: clamp(20px, 5vw, 30px) clamp(18px, 5vw, 40px) clamp(22px, 5vw, 32px);
+}
+
+.invite-photo-body .invite-message {
+  max-width: 420px;
+  font-size: clamp(17px, 3.6vw, 20px);
+  text-wrap: balance;
+}
+
+.invite-rsvp {
+  margin: 18px auto 0;
+  padding: 16px 16px 18px;
+  max-width: 400px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.invite-rsvp-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.invite-rsvp-note {
+  margin: 6px 0 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.invite-rsvp .invite-btn-primary {
+  padding: 10px 22px;
+}
+
+.invite-calendar {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.invite-calendar a {
+  color: var(--text);
+}
+
+.invite-photo-body .invite-footnote {
+  margin-top: 12px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.invite-photo-body .invite-site-link {
+  margin-top: 10px;
+  font-size: 13px;
+}
