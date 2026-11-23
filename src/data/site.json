@@ -41,12 +41,13 @@
     "linkLabel": "View our Amazon registry"
   },
   "invitePage": {
-    "_comment": "Private page at /invite/<INVITE_PAGE_TOKEN>. mode picks the wording below (saveTheDate or invitation). layout: \"floral\" (wine floral card), \"photo\" (beach photo card) or \"plain\". rsvpUrl is where the RSVP button goes; leave it empty to use this site's /rsvp page.",
+    "_comment": "Private page at /invite/<INVITE_PAGE_TOKEN>. mode picks the wording below (saveTheDate or invitation). layout: \"floral\" (wine floral card), \"photo\" (beach photo card) or \"plain\". rsvpUrl is where the RSVP button goes; leave it empty to use this site's /rsvp page. websiteUrl is where \"Visit our wedding website\" goes; leave it empty to use this site's home page.",
     "mode": "invitation",
     "layout": "floral",
     "photo": "/images/save-the-date.jpg",
     "background": "/images/invite-floral.webp",
     "rsvpUrl": "https://www.theknot.com/us/micah-duehring-and-emily-crosby-2027-05-15/rsvp",
+    "websiteUrl": "https://www.theknot.com/micahemily2027",
     "saveTheDate": {
       "eyebrow": "You’re Invited",
       "message": "We're getting married! We hope you'll celebrate with us.",

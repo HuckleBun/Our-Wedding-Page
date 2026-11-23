@@ -85,6 +85,18 @@ export default async function InvitePage({ params }: PageProps) {
   const layout = page.layout || (photo ? "photo" : "plain");
   const rsvpHref = page.rsvpUrl?.trim() || "/rsvp";
   const rsvpExternal = isExternal(rsvpHref);
+  const websiteHref = page.websiteUrl?.trim() || "/";
+
+  const websiteLink = (className?: string) =>
+    isExternal(websiteHref) ? (
+      <a href={websiteHref} className={className} target="_blank" rel="noopener noreferrer">
+        Visit our wedding website
+      </a>
+    ) : (
+      <Link href={websiteHref} className={className}>
+        Visit our wedding website
+      </Link>
+    );
 
   const calendarLine = (
     <>
@@ -147,7 +159,7 @@ export default async function InvitePage({ params }: PageProps) {
         </article>
         <div className="invite-wf-extras">
           <p>{calendarLine}</p>
-          <Link href="/">Visit our wedding website</Link>
+          {websiteLink()}
         </div>
       </div>
     );
@@ -174,9 +186,7 @@ export default async function InvitePage({ params }: PageProps) {
         )}
       </div>
       <p className="invite-calendar">{calendarLine}</p>
-      <Link href="/" className="invite-site-link">
-        Visit our wedding website
-      </Link>
+      {websiteLink("invite-site-link")}
     </>
   );
 
