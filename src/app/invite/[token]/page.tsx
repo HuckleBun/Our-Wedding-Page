@@ -53,6 +53,16 @@ function calendarLinks(title: string, isoDate: string, location: string) {
   };
 }
 
+/** "2027-05-15" -> "Saturday · May 15 · 2027" */
+function longDate(isoDate: string): string {
+  const d = new Date(`${isoDate}T12:00:00Z`);
+  const part = (opts: Intl.DateTimeFormatOptions) =>
+    d.toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
+  return `${part({ weekday: "long" })} · ${part({ month: "long", day: "numeric" })} · ${part({ year: "numeric" })}`;
+}
+
+const isExternal = (href: string) => /^https?:\/\//i.test(href);
+
 /** "2027-05-15" -> "5.15.27" */
 function shortDate(isoDate: string): string {
   const [y, m, d] = isoDate.split("-").map(Number);
@@ -71,33 +81,106 @@ export default async function InvitePage({ params }: PageProps) {
   const location = [site.venue.name, site.venue.city].filter(Boolean).join(", ");
   const cal = calendarLinks(`${site.coupleNames}'s Wedding`, site.weddingDate, location);
   const photo = page.photo?.trim();
+  const background = page.background?.trim();
+  const layout = page.layout || (photo ? "photo" : "plain");
+  const rsvpHref = page.rsvpUrl?.trim() || "/rsvp";
+  const rsvpExternal = isExternal(rsvpHref);
+
+  const calendarLine = (
+    <>
+      Add to calendar:{" "}
+      <a href={cal.google} target="_blank" rel="noopener noreferrer">
+        Google
+      </a>
+      <span aria-hidden="true"> · </span>
+      <a href={cal.ics} download="wedding.ics">
+        Apple / Outlook
+      </a>
+    </>
+  );
+
+  if (layout === "floral" && background) {
+    const longLocation = [
+      site.venue.name,
+      [site.home.locationLine1, site.home.locationLine2].filter(Boolean).join(", "),
+    ]
+      .filter(Boolean)
+      .join(" · ");
+
+    return (
+      <div className="invite-page invite-page--floral">
+        <article
+          className="invite-wf"
+          style={{ backgroundImage: `url(${background})` }}
+        >
+          <div className="invite-wf-panel">
+            <FloralDivider className="invite-wf-logo" variant="black" />
+            <p className={`invite-wf-script ${script.className}`}>{copy.eyebrow}</p>
+            <p className="invite-wf-lead">{copy.message}</p>
+            <h1 className="invite-wf-names">
+              <span>{first}</span>
+              {second ? (
+                <>
+                  <span className={`invite-wf-amp ${script.className}`}>&amp;</span>
+                  <span>{second}</span>
+                </>
+              ) : null}
+            </h1>
+            <div className="invite-wf-rule" aria-hidden="true" />
+            <p className="invite-wf-date">{longDate(site.weddingDate)}</p>
+            <p className="invite-wf-location">{longLocation}</p>
+            {rsvpExternal ? (
+              <a
+                href={rsvpHref}
+                className="invite-wf-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                RSVP
+              </a>
+            ) : (
+              <Link href={rsvpHref} className="invite-wf-btn">
+                RSVP
+              </Link>
+            )}
+          </div>
+        </article>
+        <div className="invite-wf-extras">
+          <p>{calendarLine}</p>
+          <Link href="/">Visit our wedding website</Link>
+        </div>
+      </div>
+    );
+  }
 
   const actions = (
     <>
       <div className="invite-rsvp">
         <p className="invite-rsvp-title">Please RSVP on our wedding website</p>
         <p className="invite-rsvp-note">{copy.rsvpNote}</p>
-        <Link href="/rsvp" className="invite-btn invite-btn-primary">
-          RSVP on our website
-        </Link>
+        {rsvpExternal ? (
+          <a
+            href={rsvpHref}
+            className="invite-btn invite-btn-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            RSVP
+          </a>
+        ) : (
+          <Link href={rsvpHref} className="invite-btn invite-btn-primary">
+            RSVP on our website
+          </Link>
+        )}
       </div>
-      <p className="invite-calendar">
-        Add to calendar:{" "}
-        <a href={cal.google} target="_blank" rel="noopener noreferrer">
-          Google
-        </a>
-        <span aria-hidden="true"> · </span>
-        <a href={cal.ics} download="save-the-date.ics">
-          Apple / Outlook
-        </a>
-      </p>
+      <p className="invite-calendar">{calendarLine}</p>
       <Link href="/" className="invite-site-link">
         Visit our wedding website
       </Link>
     </>
   );
 
-  if (photo) {
+  if (photo && layout !== "plain") {
     return (
       <div className="invite-page">
         <article className="invite-card invite-card--photo">
@@ -108,7 +191,7 @@ export default async function InvitePage({ params }: PageProps) {
             aria-label={`${site.coupleNames}`}
           >
             <div className="invite-photo-text">
-              <FloralDivider className="invite-photo-floral" />
+              <FloralDivider className="invite-photo-floral" variant="black" />
               <p className="invite-photo-names">
                 {first}
                 {second ? (

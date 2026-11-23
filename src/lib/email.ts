@@ -59,6 +59,8 @@ export function getBaseTemplateVars(): TemplateVars {
     venueCity: site.venue.city,
     siteUrl,
     rsvpUrl: `${siteUrl}/rsvp`,
+    // Where guests should RSVP: the external link in site.json if set (e.g. The Knot), else this site.
+    rsvpLink: site.invitePage.rsvpUrl?.trim() || `${siteUrl}/rsvp`,
     detailsUrl: `${siteUrl}/details`,
     inviteUrl: getInvitePageUrl(siteUrl) ?? siteUrl,
     adminRsvpUrl: `${siteUrl}/admin/rsvps`,

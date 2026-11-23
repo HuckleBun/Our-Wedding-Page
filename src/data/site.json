@@ -41,20 +41,23 @@
     "linkLabel": "View our Amazon registry"
   },
   "invitePage": {
-    "_comment": "Private page at /invite/<INVITE_PAGE_TOKEN>. Set mode to \"saveTheDate\" now and switch to \"invitation\" when invitations go out.",
-    "mode": "saveTheDate",
+    "_comment": "Private page at /invite/<INVITE_PAGE_TOKEN>. mode picks the wording below (saveTheDate or invitation). layout: \"floral\" (wine floral card), \"photo\" (beach photo card) or \"plain\". rsvpUrl is where the RSVP button goes; leave it empty to use this site's /rsvp page.",
+    "mode": "invitation",
+    "layout": "floral",
     "photo": "/images/save-the-date.jpg",
+    "background": "/images/invite-floral.webp",
+    "rsvpUrl": "https://www.theknot.com/us/micah-duehring-and-emily-crosby-2027-05-15/rsvp",
     "saveTheDate": {
-      "eyebrow": "Save the Date",
+      "eyebrow": "You’re Invited",
       "message": "We're getting married! We hope you'll celebrate with us.",
       "rsvpNote": "Just look up your name and let us know who's coming. You can respond for your whole household.",
-      "footnote": "Formal invitation to follow"
+      "footnote": ""
     },
     "invitation": {
-      "eyebrow": "Together with their families",
-      "message": "request the pleasure of your company at their wedding celebration",
+      "eyebrow": "Please join us",
+      "message": "for the wedding celebration of",
       "rsvpNote": "Just look up your name and let us know who's coming. You can respond for your whole household.",
-      "footnote": "Kindly RSVP on our wedding website"
+      "footnote": ""
     }
   }
 }

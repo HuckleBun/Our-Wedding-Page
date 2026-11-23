@@ -5,10 +5,10 @@
   },
   "invitation": {
     "label": "Invitation",
-    "body": "Hi {{greeting}}! You're invited to our wedding on {{weddingDate}}. Here's your invitation: {{inviteUrl}}\n\nPlease RSVP by looking up your name at {{rsvpUrl}}"
+    "body": "Hi {{greeting}}! You're invited to our wedding on {{weddingDate}}. Here's your invitation: {{inviteUrl}}\n\nPlease RSVP here: {{rsvpLink}}"
   },
   "reminder": {
     "label": "RSVP reminder",
-    "body": "Hi {{greeting}}! Just a friendly reminder to RSVP for our wedding on {{weddingDate}}. Look up your name here: {{rsvpUrl}}"
+    "body": "Hi {{greeting}}! Just a friendly reminder to RSVP for our wedding on {{weddingDate}}. You can RSVP here: {{rsvpLink}}"
   }
 }

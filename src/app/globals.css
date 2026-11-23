@@ -433,7 +433,7 @@ main {
   width: 100%;
   height: auto;
   object-fit: cover;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   border: 1px solid var(--border);
 }
 
@@ -442,8 +442,8 @@ main {
   align-items: center;
   justify-content: center;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  background: #e0d9cc;
+  aspect-ratio: 4 / 3;
+  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: var(--font-cormorant), Georgia, serif;
@@ -1317,4 +1317,232 @@ main {
 .invite-photo-body .invite-site-link {
   margin-top: 10px;
   font-size: 13px;
+}
+
+/* ---- Save-the-date: wine-red body under the photo ---- */
+
+.invite-photo-body {
+  --wine: #5a1420;
+  --wine-deep: #45101a;
+  --cream: #f6ecdf;
+  --cream-muted: rgba(246, 236, 223, 0.78);
+  background: var(--wine);
+  color: var(--cream);
+}
+
+.invite-photo-body .invite-message,
+.invite-photo-body .invite-footnote,
+.invite-photo-body .invite-calendar,
+.invite-photo-body .invite-site-link {
+  color: var(--cream-muted);
+}
+
+.invite-photo-body .invite-calendar a {
+  color: var(--cream);
+}
+
+.invite-photo-body .invite-rsvp {
+  background: var(--wine-deep);
+  border-color: rgba(246, 236, 223, 0.35);
+}
+
+.invite-photo-body .invite-rsvp-title {
+  color: var(--cream);
+}
+
+.invite-photo-body .invite-rsvp-note {
+  color: var(--cream-muted);
+}
+
+.invite-photo-body .invite-btn-primary {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--wine);
+}
+
+.invite-photo-body .invite-btn-primary:hover {
+  background: transparent;
+  color: var(--cream);
+}
+
+.invite-photo-body a:focus-visible {
+  outline: 2px solid var(--cream);
+  outline-offset: 2px;
+}
+
+/* ---- Invitation: wine floral card ("Please join us") ----
+   Sizes use cqw (1cqw = 1% of the card width) so the card scales like print. */
+
+.invite-page--floral {
+  flex-direction: column;
+  gap: 18px;
+  background: #2a0a10;
+}
+
+.invite-wf {
+  --cream: #f6ecdf;
+  --cream-muted: rgba(246, 236, 223, 0.9);
+  position: relative;
+  container-type: inline-size;
+  width: min(600px, 100%);
+  aspect-ratio: 600 / 840;
+  overflow: hidden;
+  background-color: #3a0d16;
+  background-size: cover;
+  background-position: center;
+  color: var(--cream);
+  font-family: var(--font-cormorant), Georgia, serif;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+/* Slight dim over the pattern, then the double cream frame. */
+.invite-wf::before,
+.invite-wf::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.invite-wf::before {
+  inset: 3cqw;
+  border: 1px solid rgba(246, 236, 223, 0.5);
+  box-shadow:
+    0 0 0 100cqw rgba(30, 5, 10, 0.15),
+    inset 0 0 0 100cqw rgba(30, 5, 10, 0.15);
+}
+
+.invite-wf::after {
+  inset: 4cqw;
+  border: 1px solid rgba(246, 236, 223, 0.22);
+}
+
+.invite-wf-panel {
+  position: absolute;
+  inset: 11.5cqw 10.5cqw;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.8cqw;
+  padding: 5cqw 5cqw;
+  background: rgba(40, 8, 14, 0.55);
+  border: 1px solid rgba(246, 236, 223, 0.35);
+}
+
+.invite-wf-logo {
+  display: block;
+  width: 25cqw;
+  height: auto;
+  filter: invert(94%) sepia(10%);
+}
+
+.invite-wf-script {
+  margin: 0;
+  font-size: 7.7cqw;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.invite-wf-lead {
+  margin: 0;
+  font-size: max(3.3cqw, 14px);
+  font-style: italic;
+  color: var(--cream-muted);
+}
+
+.invite-wf-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.6cqw 0;
+  font-size: 9.7cqw;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.invite-wf-amp {
+  font-size: 0.9em;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.invite-wf-rule {
+  width: 10cqw;
+  height: 1px;
+  background: rgba(246, 236, 223, 0.55);
+}
+
+.invite-wf-date {
+  margin: 0 -0.2em 0 0;
+  font-size: max(3.6cqw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-variant-numeric: lining-nums;
+}
+
+.invite-wf-location {
+  margin: -1.2cqw -0.3em 0 0;
+  font-family: var(--font-source-sans), system-ui, sans-serif;
+  font-size: max(2cqw, 10px);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+}
+
+.invite-wf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 25cqw;
+  min-height: 44px;
+  margin-top: 1.6cqw;
+  padding: 0 6cqw;
+  box-sizing: border-box;
+  border: 1px solid var(--cream);
+  background: var(--cream);
+  color: #5a1420;
+  font-family: var(--font-source-sans), system-ui, sans-serif;
+  font-size: max(2.2cqw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.invite-wf-btn:hover {
+  background: transparent;
+  color: var(--cream);
+}
+
+.invite-wf a:focus-visible,
+.invite-wf-extras a:focus-visible {
+  outline: 2px solid #f6ecdf;
+  outline-offset: 3px;
+}
+
+.invite-wf-extras {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(246, 236, 223, 0.75);
+  text-align: center;
+}
+
+.invite-wf-extras p {
+  margin: 0;
+}
+
+.invite-wf-extras a {
+  color: #f6ecdf;
 }

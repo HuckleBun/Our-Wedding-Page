@@ -20,18 +20,14 @@ export default function HomePage() {
               src={heroImage}
               alt="Micah and Emily"
               width={1200}
-              height={750}
+              height={900}
               className="home-hero-image"
               priority
               unoptimized
             />
           ) : (
-            <div
-              className="home-hero-placeholder"
-              aria-label="Photo placeholder"
-            >
-              <span>Your photo here</span>
-            </div>
+            // Reserved for the couple photo; left blank until one is set in site.json.
+            <div className="home-hero-placeholder" aria-hidden="true" />
           )}
         </VineFrame>
       </div>
